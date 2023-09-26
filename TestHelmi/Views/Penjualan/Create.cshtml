@@ -1,0 +1,128 @@
+﻿@model TestHelmi.Models.Penjualan
+
+@{
+    Layout = "Header";
+    ViewData["Title"] = "Test Helmi";
+}
+
+<style>
+
+    .cont {
+        max-width: 700px;
+        width: 100%;
+        background-color: #fff;
+        padding: 25px 30px;
+        border-radius: 5px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        display: flex;
+        justify-content: center;
+    }
+
+    .content {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins',sans-serif;
+    }
+
+    .detail {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 20px 0 12px 0;
+    }
+
+        .detail .form-group {
+            margin-bottom: 15px;
+            width: calc(100% / 2 - 20px);
+        }
+
+            .detail .form-group input {
+                height: 45px;
+                width: 100%;
+                outline: none;
+                font-size: 16px;
+                border-radius: 5px;
+                padding-left: 15px;
+                border: 1px solid #ccc;
+                border-bottom-width: 2px;
+                transition: all 0.3s ease;
+            }
+
+    .form-group div.control-label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .detail .form-input {
+        width: 640px;
+        background-color: royalblue;
+        height: 40px;
+        border-radius: 5px;
+        color: white;
+        font-size: 20px;
+    }
+
+    .wrap {
+        display: flex;
+        justify-content: center;
+    }
+
+</style>
+
+
+
+<h1 style="text-align:center">Create</h1>
+<a href="/penjualan/index/" class="btn btn-danger">Kembali</a>
+<hr />
+<div class="wrap">
+    <div class="cont">
+        <div class="content">
+            <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="detail">
+                    <div class="form-group">
+                        <label asp-for="NamaBarang" class="control-label">Nama Barang</label>
+                        <input asp-for="NamaBarang" class="form-group" />
+                        <span asp-validation-for="NamaBarang" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Stok" class="control-label">Stok</label>
+                        <input asp-for="Stok" class="form-group" />
+                        <span asp-validation-for="Stok" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="JumlahTerjual" class="control-label">Jumlah Terjual</label>
+                        <input asp-for="JumlahTerjual" class="form-group" />
+                        <span asp-validation-for="JumlahTerjual" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TanggalTransaksi" class="control-label">Tanggal Transaksi</label>
+                        <input asp-for="TanggalTransaksi" class="form-group" />
+                        <span asp-validation-for="TanggalTransaksi" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="JenisBarang" class="control-label">Jenis Barang</label>
+                        <select asp-for="JenisBarang" class="form-group">
+                            <option value="Konsumsi">Konsumsi</option>
+                            <option value="Pembersih">Pembersih</option>
+                        </select>
+                        <span asp-validation-for="JenisBarang" class="text-danger"></span>
+                    </div>
+
+
+                    <button asp-controller="Penjualan" asp-action="Create" class="form-input" type="submit">Buat</button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

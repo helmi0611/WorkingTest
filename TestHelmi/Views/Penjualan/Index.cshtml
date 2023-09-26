@@ -1,0 +1,164 @@
+﻿
+@{
+    Layout = "Header";
+    ViewData["Title"] = "Index";
+}
+
+<style>
+
+    .styled-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        border: 3px solid;
+
+    }
+
+        .styled-table thead tr {
+            background-color: royalblue;
+            color: #ffffff;
+            text-align: left;
+            
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+         .styled-table tbody tr:last-of-type {
+                border-bottom: 2px solid royalblue;
+            }
+         input {
+             padding:5px;
+             margin:10px;
+             border-radius:5px;
+         }
+         button{
+            padding: 5px;
+            margin: 10px;
+             border-radius: 5px;
+         }
+
+          a {
+            padding: 5px;
+            margin: 7px;
+            border-radius: 5px;
+         }
+</style>
+
+@model List<Penjualan>
+
+<h1 style="text-align:center">Helmi Tris Edyan</h1>
+<a href="/penjualan/index/" class="btn btn-primary">Refresh</a>
+
+<hr />
+<a href="/penjualan/Create" class="btn btn-warning">Add data</a>
+<hr />
+<form method="post" action="/Penjualan/Search">
+    <label>
+        Search data :
+        <input type="text" name="data" />
+    </label>
+    <button type="submit" class="btn-search">search</button>
+</form>
+
+<div class="card-body">
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama Barang</th>
+            <th>Stok</th>
+            <th>Jumlah Terjual</th>
+            <th>Tanggal Transaksi</th>
+            <th>Jenis Barang</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+        @{
+            @Html.ActionLink("(A-Z)", "Index", new { sortOrder = "name" })
+            @Html.ActionLink("(Z-A)", "Index", new { sortOrder = "name_desc" })
+        }
+        
+            <tbody>
+                    @foreach (var penjualan in Model)
+                    {
+                        <tr>
+                            <td>@penjualan.Id</td>
+                            <td>@penjualan.NamaBarang</td>
+                            <td>@penjualan.Stok</td>
+                            <td>@penjualan.JumlahTerjual</td>
+                            <td>@penjualan.TanggalTransaksi</td>
+                            <td>@penjualan.JenisBarang</td>
+                            <td style="display :flex">
+                            <a href="/penjualan/Edit/@penjualan.Id" class="btn btn-warning">Edit</a>
+                            <a href="/penjualan/Delete/@penjualan.Id" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+            </tbody>
+        
+            </table>
+</div>
+<hr />
+<form method="post" action="/Penjualan/SearchByDate">
+    <label>
+        Awal :
+        <input type="date" name="awal" />
+    </label>
+    <label>
+        Akhir :
+        <input type="date" name="akhir" />
+    </label>
+    <button type="submit">search</button>
+</form>
+<h2>Laporan Penjualan Berdasarkan Jenis Barang</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Jenis Barang</th>
+            <th>Jumlah Terjual</th>
+            <th>Keterangan</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+           
+
+            // Menjumlahkan total penjualan untuk setiap jenis barang di luar loop
+            var totalPenjualanKonsumsi = Model.Where(x => x.JenisBarang == "Konsumsi").Sum(x => x.JumlahTerjual);
+            var totalPenjualanPembersih = Model.Where(x => x.JenisBarang == "Pembersih").Sum(x => x.JumlahTerjual);
+            // Menentukan keterangan berdasarkan perbandingan total penjualan
+            var keteranganKonsumsi = totalPenjualanKonsumsi > totalPenjualanPembersih ? "Penjualan terbesar" :
+            totalPenjualanKonsumsi < totalPenjualanPembersih ? "Penjualan terkecil" :
+            "Sama besar";
+
+            var keteranganPembersih = totalPenjualanPembersih > totalPenjualanKonsumsi ? "Penjualan terbesar" :
+            totalPenjualanPembersih < totalPenjualanKonsumsi ? "Penjualan terkecil" :
+            "Sama besar";
+            <tr>
+                <td>Konsumsi</td>
+                <td>@totalPenjualanKonsumsi</td>
+                <td>@keteranganKonsumsi</td>
+            </tr>
+            <tr>
+                <td>Pembersih</td>
+                <td>@totalPenjualanPembersih</td>
+                <td>@keteranganPembersih</td>
+            </tr>
+        }
+    </tbody>
+</table>
